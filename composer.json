@@ -1,0 +1,29 @@
+{
+    "name": "yves/mopay",
+    "description": "This package provide easy way to make mobile money payments from mopay gateway",
+    "type": "library",
+    "require": {
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Niyobuhungiro Yves",
+            "email": "niyobuhungiro.yves@gmail.com"
+        }
+    ],
+    "keywords": ["mobile-money", "mopay", "mtn-mobile-money","rwanda","laravel-package","payment","kwisyure","mtn"],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Yves\\Mopay\\": "src/"
+        }
+    },
+    "extra":{
+        "laravel":{
+            "providers":[
+                "yves\\mopay\\Providers\\MopayServiceProvider",
+                "yves\\mopay\\Providers\\EventServiceProvider"
+            ]
+        }
+    }
+}
