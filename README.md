@@ -169,7 +169,7 @@ class PassengerPaymentController extends Controller
         // adding items
         $paymentForm->addItem(new PaymentFormItem(PaymentFormItem::AMOUNT,"1000"));
         $paymentForm->addItem(new PaymentFormItem(PaymentFormItem::CURRENCY,"Rwf"));
-        $paymentForm->addItem(new PaymentFormItem(PaymentFormItem::MSISDN,"250783588642",false));
+        $paymentForm->addItem(new PaymentFormItem(PaymentFormItem::MSISDN,"250783588655",false));
         $paymentForm->addItem(new PaymentFormItem(PaymentFormItem::CLIENT_NAME,"Mukunzi Joshua"));
         $paymentForm->addItem(new PaymentFormItem(PaymentFormItem::EMAIL,"mukunzi.joshua@gmail.com"));
 
