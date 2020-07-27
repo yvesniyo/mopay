@@ -1,5 +1,4 @@
 <?php
-
 namespace Yves\Mopay\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,11 +15,11 @@ class Payment extends Model{
 
     protected $guarded = [];
 
-    public static $STATUS_CREATED = -1;
-    public static $STATUS_INITIATED = 0;
-    public static $STATUS_PENDING = 1;
-    public static $STATUS_COMPLETE = 2;
-    public static $STATUS_FAIL = 3;    
+    public const STATUS_CREATED = -1;
+    public const STATUS_INITIATED = 0;
+    public const STATUS_PENDING = 1;
+    public const STATUS_COMPLETE = 2;
+    public const STATUS_FAIL = 3;    
 
 
     public static function request(
@@ -63,16 +62,16 @@ class Payment extends Model{
     public static function booted(){
         parent::updated(function($payment){
             switch ($payment->status) {
-                case self::$STATUS_INITIATED:
+                case self::STATUS_INITIATED:
                     event(new PaymentInitializedEvent($payment));
                     break;
-                case self::$STATUS_PENDING:
+                case self::STATUS_PENDING:
                     event(new PaymentPendingEvent($payment));
                     break;
-                case self::$STATUS_COMPLETE:
+                case self::STATUS_COMPLETE:
                     event(new PaymentCompletedEvent($payment));
                     break;
-                case self::$STATUS_FAIL:
+                case self::STATUS_FAIL:
                     event(new PaymentFailedEvent($payment));
                     break;
                 default:

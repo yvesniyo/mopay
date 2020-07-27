@@ -45,7 +45,7 @@ trait MopayTrait{
         return Payment::where([
             "context_model_id"=> $context_model_id,
             "context_model"=> $context_model,
-            "status"=> Payment::$STATUS_PENDING,
+            "status"=> Payment::STATUS_PENDING,
         ]);
     }
 
@@ -58,7 +58,7 @@ trait MopayTrait{
         return Payment::where([
             "context_model_id"=> $context_model_id,
             "context_model"=> $context_model,
-            "status"=> Payment::$STATUS_INITIATED,
+            "status"=> Payment::STATUS_INITIATED,
         ]);
     }
 
@@ -71,7 +71,7 @@ trait MopayTrait{
         return Payment::where([
             "context_model_id"=> $context_model_id,
             "context_model"=> $context_model,
-            "status"=> Payment::$STATUS_COMPLETE,
+            "status"=> Payment::STATUS_COMPLETE,
         ]);
     }
 
@@ -84,7 +84,7 @@ trait MopayTrait{
         return Payment::where([
             "context_model_id"=> $context_model_id,
             "context_model"=> $context_model,
-            "status"=> Payment::$STATUS_FAIL,
+            "status"=> Payment::STATUS_FAIL,
         ]);
     }
 
@@ -97,7 +97,7 @@ trait MopayTrait{
         return Payment::where([
             "context_model_id"=> $context_model_id,
             "context_model"=> $context_model,
-            "status"=> Payment::$STATUS_CREATED,
+            "status"=> Payment::STATUS_CREATED,
         ]);
     }
 }

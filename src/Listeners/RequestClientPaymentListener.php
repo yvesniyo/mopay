@@ -26,7 +26,7 @@ class RequestClientPaymentListener implements ShouldQueue{
         ]);
         $payment_req_datas["postback_url"] = $payment_req_datas["post_back_url"]; 
         unset($payment_req_datas["post_back_url"]);
-        $payment->status = Payment::$STATUS_INITIATED;
+        $payment->status = Payment::STATUS_INITIATED;
         $payment->message = "Initialized";
         $payment->save();
         $response = Http::retry(3, 100)->post($url, $payment_req_datas);
@@ -38,15 +38,15 @@ class RequestClientPaymentListener implements ShouldQueue{
             $reference_id = $json["reference_id"] ?? null;
             $payment->message = $message;
             $payment->status = $status;
-            if($status == Payment::$STATUS_PENDING){
+            if($status == Payment::STATUS_PENDING){
                 $payment->reference_id = $reference_id;
             }
-            if($status == Payment::$STATUS_FAIL){
+            if($status == Payment::STATUS_FAIL){
                 $payment->reason = $reason;
             }
             $payment->save();
         }else{
-            $payment->status = Payment::$STATUS_FAIL;
+            $payment->status = Payment::STATUS_FAIL;
             if($response->clientError()){
                 $payment->message = "Client error ". $response->body();
             }else{
