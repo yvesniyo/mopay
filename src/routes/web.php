@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Route;
 Route::namespace("\Yves\Mopay\Controllers")->group(function(){
 
     Route::group(["prefix"=>"mopay/payments"], function(){
-
-        Route::get("/","PaymentsController@form")->name("mopay.payment.form");
+        Route::get("/","PaymentsController@list")->name("mopay.payments.list");
+        Route::get("/form","PaymentsController@form")->name("mopay.payment.form");
         Route::post("/init","PaymentsController@initByForm")->name("mopay.payment.inititalize");
     
     });

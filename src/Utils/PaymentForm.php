@@ -50,4 +50,12 @@ class PaymentForm{
     }
 
 
+    public function view(){
+        return view("mopay::form",[
+            "form"=> $this,
+            "extra"=> encrypt($this),
+        ]);
+    }
+
+
 }

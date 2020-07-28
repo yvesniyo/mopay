@@ -31,11 +31,11 @@ There are six config options:
 
 ##### MOPAY_API_URL
 
-This by default there is mopay api v1 `'http://api.ishema.rw/api/v1/debit'`.And it is where payment requests will pass through as gateway.
+This by default there is mopay api v1  [Ishema Api](http://api.ishema.rw/api/v1/debit).And it is where payment requests will pass through as gateway.
 
 ##### MOPAY_API_TOKEN
 
-Make sure you set this for the token you get from `http://api.ishema.rw` dashboard on profile part.
+Make sure you set this for the token you get from [Ishema Web Dashboard](http://api.ishema.rw) dashboard on profile part.
 
 ##### MOPAY_WEBHOOK
 
@@ -142,9 +142,9 @@ class PassengerPaymentController extends Controller
 ```
 
 
-#### Initiate payment on web form 
+#### Or you could show web interface to your clients for payment
 
-This can be of help if you only just users to put phone numbers for this payment.
+For now only `phoneNumber` is capable of being changed on front view by
 
 ```php
 
@@ -164,6 +164,7 @@ class PassengerPaymentController extends Controller
     // show user a form to fill in phone number
     public function showPaymentForm(Request $request){
 
+        //initialize payment form
         $paymentForm = new PaymentForm();
 
         // adding items
@@ -173,63 +174,12 @@ class PassengerPaymentController extends Controller
         $paymentForm->addItem(new PaymentFormItem(PaymentFormItem::CLIENT_NAME,"Mukunzi Joshua"));
         $paymentForm->addItem(new PaymentFormItem(PaymentFormItem::EMAIL,"mukunzi.joshua@gmail.com"));
 
-
         $paymentCart = new PaymentCart();// if you wish to show cart on the sibar if template  view
         $paymentCart->addProduct(new PaymentProductCart("Ticket",1000));// adding product to cart
         $paymentForm->setCart($paymentCart);// set payment cart
 
-        return view("mopay::form",[
-            "form"=> $paymentForm,
-            "extra"=>encrypt($paymentForm),// we need this encrypted to store extra datas which will need to submit to another request
-        ]);
+        return $paymentForm->view();// this will return view for the payment
     }
-
-
-    //after user submited the form
-    public function paymentFormSubmit(Request $request){
-        $request = $request->all();
-        $validator = validator($request, [
-            "extra"=> "required",
-        ]);
-        if($validator->fails()){
-            return redirect()->back()->withErrors($validator->errors())->withInput($request);
-        }
-        try {
-            $paymentForm = decrypt($request["extra"]);
-        } catch (DecryptException $th) {
-            return response()->json([
-                "status"=> 422,
-                "message"=> "User inputs can not be processed",
-                "errors"=> [],
-                "error"=> $th->getMessage(),
-            ]);
-        }
-        $editablesInForm = $paymentForm->editableItems();
-        $validator = validator($request, [
-            "extra"=> "required",
-        ]);
-        if($validator->fails()){
-            return redirect()->back()->withErrors($validator->errors())->withInput($request);
-        }
-        
-        $itemsInForm = $paymentForm->items();
-        $vars = [];
-        foreach ($itemsInForm as $item) {
-            if(!$item->editable){
-                ${$item->name} = $item->value;
-            }else{
-                ${$item->name} = $request[$item->name];
-            }
-            $vars[$item->name] = ${$item->name};
-        }
-        $payment = Payment::request($amount,$msisdn,$client_name,null,null,$email);
-        if($payment){
-            return view("mopay::payment_result", compact("payment"));
-        }
-        $failed = true;
-        return view("mopay::payment_result", compact("payment","failed"));
-    }
-
 
 }
 
