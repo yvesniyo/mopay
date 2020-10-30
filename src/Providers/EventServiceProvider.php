@@ -1,6 +1,7 @@
 <?php
 namespace Yves\Mopay\Providers;
 
+use App\Listeners\PaymentCompleteListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Yves\Mopay\Events\PaymentCompletedEvent;
 use Yves\Mopay\Events\PaymentCreatedEvent;
@@ -16,14 +17,16 @@ class EventServiceProvider extends ServiceProvider{
     protected $listen = [
         PaymentCreatedEvent::class => [
             RequestClientPaymentListener::class,
+            
         ],
         PaymentInitializedEvent::class => [
             
         ],
         PaymentPendingEvent::class => [
-
+            
         ],
         PaymentCompletedEvent::class => [
+            PaymentCompleteListener::class,
             SendClientMailPaymentCompleteListener::class
         ],
         PaymentFailedEvent::class => [

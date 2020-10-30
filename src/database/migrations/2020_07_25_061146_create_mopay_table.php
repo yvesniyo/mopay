@@ -17,6 +17,8 @@ class CreateMopayTable extends Migration
             $table->id();
             $table->float("amount");
             $table->string("msisdn");
+            $table->string("credit_number");
+            $table->string("mopay_url")->nullable();
             $table->string("external_id");
             $table->string("post_back_url");
             $table->string("client_name");

@@ -13,11 +13,6 @@ use Yves\Mopay\Utils\PaymentProductCart;
 
 class PaymentsController extends Controller{
 
-    public function list(Request $request)
-    {
-        $payments = Payment::all();
-        return view("mopay::payments_list", compact("payments"));
-    }
 
     public function initByForm(Request $request){
         $request = $request->all();
@@ -55,6 +50,8 @@ class PaymentsController extends Controller{
             }
             $vars[$item->name] = ${$item->name};
         }
+
+
         $payment = Payment::request($amount,$msisdn,$client_name,null,null,$email);
         if($payment){
             return view("mopay::payment_result", compact("payment"));
@@ -77,9 +74,11 @@ class PaymentsController extends Controller{
         $paymentCart = new PaymentCart();
         $paymentCart->addProduct(new PaymentProductCart("Ticket",1000));
         $paymentForm->setCart($paymentCart);
-        return $paymentForm->view();
 
-        
+        return view("mopay::form",[
+            "form"=> $paymentForm,
+            "extra"=> encrypt($paymentForm),
+        ]);
     }
 
     public function webhook(Request $request){
